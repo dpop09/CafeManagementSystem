@@ -26,7 +26,20 @@ CREATE TABLE product(
     name VARCHAR(255) NOT NULL,
     categoryId INT NOT NULL,
     description VARCHAR(255),
-    price float,
+    price FLOAT,
     status VARCHAR(20),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE bill(
+    id INT NOT NULL AUTO_INCREMENT,
+    uuid VARCHAR(200) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    contactNumber VARCHAR(20) NOT NULL,
+    paymentMethod VARCHAR(50) NOT NULL,
+    total FLOAT NOT NULL,
+    productDetails JSON DEFAULT NULL,
+    createdBy VARCHAR(255) NOT NULL,
     PRIMARY KEY(id)
 );
