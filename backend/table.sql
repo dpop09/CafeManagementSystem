@@ -14,3 +14,19 @@ VALUES('Admin', '123123123', 'admin@gmail.com', 'admin', 'true', 'admin');
 
 INSERT INTO user(name, contactNumber, email, password, status, role)
 VALUES('John Smith', '(123)123-1234', 'jsmith@gmail.com', '123456', 'false', 'user');
+
+CREATE TABLE category(
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE product(
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    categoryId INT NOT NULL,
+    description VARCHAR(255),
+    price float,
+    status VARCHAR(20),
+    PRIMARY KEY(id)
+);
