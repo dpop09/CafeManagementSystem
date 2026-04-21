@@ -1,13 +1,4 @@
-<nav>
-  <h1>Cafe Manager</h1>
-  <a routerLink="/menu">View Menu</a>
-  <a routerLink="/status">Check Server</a>
-</nav>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
-
-<footer>
-  <p>Connection Status: {{ serverMessage }}</p>
-</footer>
+<div>
+    <app-navigation></app-navigation>
+    <router-outlet></router-outlet>
+</div>

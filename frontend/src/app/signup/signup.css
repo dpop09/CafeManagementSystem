@@ -1,0 +1,26 @@
+/* Ensure the container takes up the full viewport height */
+.signup-container {
+  min-height: calc(100vh - 70px); /* Adjust '70px' if your navbar is a different height */
+  background-color: #f8f9fa; /* Light grey background to contrast the card */
+  display: flex;
+  align-items: center;
+}
+
+/* Add a smooth border to the card */
+.signup-card {
+  border: none;
+  border-radius: 1rem;
+}
+
+/* Subtle focus state for input groups */
+.input-group:focus-within {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Match Bootstrap primary blue */
+  border-radius: 0.375rem; /* Match standard input border radius */
+}
+
+/* Ensure consistent padding on smaller screens */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 2.5rem !important; /* Slightly reduce padding for mobile */
+  }
+}

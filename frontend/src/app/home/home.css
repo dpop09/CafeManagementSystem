@@ -1,0 +1,42 @@
+/* Hero Image Styling */
+.hero-section {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('https://images.unsplash.com/photo-1501339817302-ee4bba9a6954?q=80&w=1200');
+  background-size: cover;
+  background-position: center;
+  height: 60vh;
+}
+
+/* Featured Item Badges */
+.item-card {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.item-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: #ff6b6b;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Adjustments for the Staff Section at the bottom */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
