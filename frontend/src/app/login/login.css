@@ -1,8 +1,8 @@
 .login-container {
-  min-height: 90vh; /* Centers the card vertically */
+  min-height: calc(100vh - 70px); /* Adjust '70px' if your navbar is a different height */
   display: flex;
   align-items: center;
-  background-color: #f0f2f5;
+  background-color: #f8f9fa;;
 }
 
 .card {
@@ -13,15 +13,6 @@
 .form-control:focus {
   border-color: #0d6efd;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-}
-
-.brand-icon {
-  background: rgba(13, 110, 253, 0.1);
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  border-radius: 50%;
-  margin: 0 auto;
 }
 
 /* Style for the 'Forgot Password' link */

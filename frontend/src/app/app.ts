@@ -1,8 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, signal, OnInit } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Api } from './services/api';
-import { Home } from './home/home';
 import { Navigation } from './navigation/navigation';
 
 @Component({
@@ -23,7 +21,7 @@ export class App implements OnInit {
     this.apiService.getServerResponse().subscribe({
       next: (data) => {
         this.serverMessage = data;
-        //console.log(this.serverMessage)
+        console.log(this.serverMessage)
       },
       error: (err) => {
         this.serverMessage = 'Error: Could not reach the server.';
@@ -31,5 +29,4 @@ export class App implements OnInit {
       }
     });
   }
-  
 }

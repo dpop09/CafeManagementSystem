@@ -1,9 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Api } from '../services/api';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  imports: [],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './signup.html',
   styleUrl: './signup.css',
 })
-export class Signup {}
+export class Signup implements OnInit {
+  signupForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    contactNumber: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
+  })
+  
+  responseMessage: string = '';
+
+  constructor(private apiService: Api) {}
+
+  ngOnInit() {}
+
+  onSignup() {
+    console.log(this.signupForm)
+    if (this.signupForm.valid) {
+      this.apiService.signupUser(this.signupForm.value as any).subscribe({
+        next: (response) => {
+          console.log('Success', response);
+          this.responseMessage = 'Account created successfully!';
+        },
+        error: (err) => {
+          console.error('Signup failed', err);
+          this.responseMessage = "Error signing up user. Please try again later.";
+        }
+      })
+    }
+  }
+}
