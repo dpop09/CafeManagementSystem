@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Api } from '../services/api';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,24 +17,27 @@ export class Login implements OnInit{
     password: new FormControl('', [Validators.required])
   })
 
-  responseMessage: string = '';
+  errorMessage = signal<string>('');
 
-  constructor(private apiService: Api) {}
+  constructor(
+    private apiService: Api, 
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
   onLogin() {
-    console.log(this.loginForm.value)
+    this.errorMessage.set('');
     if (this.loginForm.valid) {
       this.apiService.loginUser(this.loginForm.value as any).subscribe({
         next: (response) => {
           console.log('Success', response);
           this.apiService.setToken(response.token);
-          this.responseMessage = 'User logged in successfully.';
+          this.router.navigate(['/home']);
         },
         error: (err) => {
-          console.log('Error', err);
-          this.responseMessage = 'Error logging in. Please try again later.';
+          this.errorMessage.set(err.error.message);
+          console.log('Error', this.errorMessage);
         }
       })
     }

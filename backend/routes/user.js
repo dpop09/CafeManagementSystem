@@ -17,13 +17,13 @@ router.post('/signup', (req, res) => {
                 query = "INSERT INTO user(name, contactNumber, email, password, status, role) values(?,?,?,?,'false','user')";
                 connection.query(query, [user.name, user.contactNumber, user.email, user.password], (err, results) => {
                     if (!err) {
-                        return res.status(200).json({ message: "Successfully registed user." });
+                        return res.status(200).json({ message: "Successfully registered user. Please wait for an admin to approve you." });
                     } else {
                         return res.status(500).json(err);
                     }
                 })
             } else {
-                return res.status(400).json({ message: "Email already exists." });
+                return res.status(400).json({ message: "This email is already in use." });
             }
         }
         else {
@@ -40,7 +40,7 @@ router.post('/login', (req, res) => {
             if (results.length <= 0 || results[0].password != user.password) {
                 return res.status(401).json({ message: "Incorrect username or password." });
             } else if (results[0].status === 'false') {
-                return res.status(401).json({ message: "Wait for admin approval." });
+                return res.status(403).json({ message: "Pending admin approval. Please try again later." });
             } else if (results[0].password == user.password) {
                 const response = { email: results[0].email, role: results[0].role };
                 const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN, { expiresIn: '8h' });

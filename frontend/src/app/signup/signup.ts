@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Api } from '../services/api';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -19,23 +19,23 @@ export class Signup implements OnInit {
     password: new FormControl('', [Validators.required])
   })
   
-  responseMessage: string = '';
+  responseMessage = signal<string>('');
 
   constructor(private apiService: Api) {}
 
   ngOnInit() {}
 
   onSignup() {
-    console.log(this.signupForm)
+    this.responseMessage.set('');
     if (this.signupForm.valid) {
       this.apiService.signupUser(this.signupForm.value as any).subscribe({
         next: (response) => {
           console.log('Success', response);
-          this.responseMessage = 'Account created successfully!';
+          this.responseMessage.set(response.message);
         },
         error: (err) => {
-          console.error('Signup failed', err);
-          this.responseMessage = "Error signing up user. Please try again later.";
+          console.error('Error', err);
+          this.responseMessage.set(err.error.message);
         }
       })
     }

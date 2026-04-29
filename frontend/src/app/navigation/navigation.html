@@ -4,8 +4,10 @@
     
     <div class="navbar-nav ms-auto">
       <a class="nav-link" routerLink="home" routerLinkActive="active">Home</a>
-      <a class="nav-link" routerLink="login" routerLinkActive="active">Login</a>
-      <a class="btn btn-dark ms-lg-3" routerLink="signup">Sign Up</a>
+      <a *ngIf="!isLoggedIn" class="nav-link" routerLink="login" routerLinkActive="active">Login</a>
+      <a *ngIf="isLoggedIn" class="nav-link" (click)="onLogout()">Logout</a>
+      <a *ngIf="!isLoggedIn" class="btn btn-dark ms-lg-3" routerLink="signup">Sign Up</a>
+      <a *ngIf="isLoggedIn && isAdmin" class="nav-link" routerLink="admin" routerLinkActive="active">Admin Portal</a>
     </div>
   </div>
 </nav>

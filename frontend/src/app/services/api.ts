@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -10,17 +11,28 @@ export class Api {
 
   // BehaviorSubject object will hold the current token value
   private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
+  private roleSubject = new BehaviorSubject<string | null>(this.getRoleFromToken(localStorage.getItem('token')));
   // this observable is what other componenets will subscribe to
   token$ = this.tokenSubject.asObservable();
+  role$ = this.roleSubject.asObservable();
 
   setToken(token: string) {
     localStorage.setItem('token', token); // persist for page refreshes
     this.tokenSubject.next(token);        // notify all subscribers
+
+    const role = this.getRoleFromToken(token);
+    this.roleSubject.next(role);
+  }
+
+  setRole(role: string) {
+    localStorage.setItem('role', role);
+    this.roleSubject.next(role);
   }
 
   logout() {
     localStorage.removeItem('token');
     this.tokenSubject.next(null);
+    this.roleSubject.next(null);
   }
 
   constructor(private http: HttpClient) { }
@@ -35,5 +47,16 @@ export class Api {
 
   loginUser(loginInfo: { email: string; password: string; }): Observable<any> {
     return this.http.post(this.apiUrl + "user/login", loginInfo);
+  }
+
+  private getRoleFromToken(token: string | null): string | null {
+    if (!token) 
+      return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded.role;
+    } catch (error) {
+      return null;
+    }
   }
 }
