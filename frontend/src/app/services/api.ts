@@ -41,12 +41,28 @@ export class Api {
     return this.http.get(this.apiUrl, { responseType: 'text' });
   }
 
-  signupUser(signupInfo: { username: string; contactNumber: string; email: string; password: string }): Observable<any> {
+  signupUser(signupInfo: { username: string; contactNumber: string; email: string; password: string; }): Observable<any> {
     return this.http.post(this.apiUrl + "user/signup", signupInfo);
   }
 
   loginUser(loginInfo: { email: string; password: string; }): Observable<any> {
     return this.http.post(this.apiUrl + "user/login", loginInfo);
+  }
+
+  getUsers(): Observable<any> {
+    return this.http.get(this.apiUrl + "user/get");
+  }
+
+  getCategories(): Observable<any> {
+    return this.http.get(this.apiUrl+ "category/get");
+  }
+
+  getProducts(): Observable<any> {
+    return this.http.get(this.apiUrl + "product/get");
+  }
+
+  getBills(): Observable<any> {
+    return this.http.get(this.apiUrl + "bill/getBills");
   }
 
   private getRoleFromToken(token: string | null): string | null {

@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="pt-5">
+        <table class="table">
+            <thead>
+                <th scope="col">Id</th>
+                <th scope="col">Uuid</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Payment Method</th>
+                <th scope="col">Total</th>
+                <th scope="col">Product Details</th>
+                <th scope="col">Created By</th>
+            </thead>
+            <tbody>
+                @for (bill of billsData(); track bill.id) {
+                <tr>
+                    <td>{{ bill.id }}</td>
+                    <td>{{ bill.uuid }}</td>
+                    <td>{{ bill.name }}</td>
+                    <td>{{ bill.email }}</td>
+                    <td>{{ bill.contactNumber }}</td>
+                    <td>{{ bill.paymentMethod }}</td>
+                    <td>{{ bill.total }}</td>
+                    <td>{{ bill.productDetails }}</td>
+                    <td>{{ bill.createdBy }}</td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="9" class="text-black">There are no recorded bills.</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
