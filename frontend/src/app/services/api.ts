@@ -54,7 +54,7 @@ export class Api {
   }
 
   getCategories(): Observable<any> {
-    return this.http.get(this.apiUrl+ "category/get");
+    return this.http.get(this.apiUrl + "category/get");
   }
 
   getProducts(): Observable<any> {
@@ -65,8 +65,32 @@ export class Api {
     return this.http.get(this.apiUrl + "bill/getBills");
   }
 
+  approveUser(userInfo: { id: string; status: string; }): Observable<any> {
+    return this.http.patch(this.apiUrl + "user/update", userInfo);
+  }
+
+  addCategory(categoryInfo: { name: string; }): Observable<any> {
+    return this.http.post(this.apiUrl + "category/add", categoryInfo);
+  }
+
+  updateCategory(categoryInfo: { id: string; name: string; }): Observable<any> {
+    return this.http.patch(this.apiUrl + "category/update", categoryInfo);
+  }
+
+  addProduct(productInfo: { categoryId: string; name: string; description: string; price: string; }): Observable<any> {
+    return this.http.post(this.apiUrl + "product/add", productInfo);
+  }
+
+  updateProduct(productInfo: { id: string; categoryId: string; name: string; description: string; price: string; }): Observable<any> {
+    return this.http.patch(this.apiUrl + "product/update", productInfo);
+  }
+
+  updateProductStatus(productInfo: { id: string; status: string; }): Observable<any> {
+    return this.http.patch(this.apiUrl + "product/updateStatus", productInfo);
+  }
+
   private getRoleFromToken(token: string | null): string | null {
-    if (!token) 
+    if (!token)
       return null;
     try {
       const decoded: any = jwtDecode(token);

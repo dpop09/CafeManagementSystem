@@ -18,5 +18,47 @@
                 }
             </tbody>
         </table>
+        <div class="row pt-5">
+            <div class="col">
+                <div class="row pb-4">
+                    <div class="col">
+                        <button class="btn btn-primary" (click)="this.formMode.set('add');">Add Category</button>
+                    </div>
+                </div>
+                <div class="row pb-4">
+                    <div class="col">
+                        <button class="btn btn-primary" (click)="this.formMode.set('update');">Update Category</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <form *ngIf="formMode() === 'add'" [formGroup]="addCategoryForm" (ngSubmit)="onAddCategory()">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingName" formControlName="name">
+                        <label for="floatingName">Category Name</label>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-primary btn-lg rounded-3 py-2 fw-bold" type="submit">
+                            Add Category
+                        </button>
+                    </div>
+                </form>
+                <form *ngIf="formMode() === 'update'" [formGroup]="updateCategoryForm" (ngSubmit)="onUpdateCategory()">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingId" formControlName="id">
+                        <label for="floatingId">Category Id</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingName" formControlName="name">
+                        <label for="floatingName">Category Name</label>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-primary btn-lg rounded-3 py-2 fw-bold" type="submit">
+                            Update Category
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

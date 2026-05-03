@@ -24,5 +24,50 @@
                 }
             </tbody>
         </table>
+        <div class="row pt-5">
+            <div class="col">
+                <div class="row pb-4">
+                    <div class="col">
+                        <button class="btn btn-primary" (click)="this.formMode.set('approve');">Approve User</button>
+                    </div>
+                </div>
+                <div class="row pb-4">
+                    <div class="col">
+                        <button class="btn btn-primary" (click)="this.formMode.set('add');">Add User</button>
+                    </div>
+                </div>
+                <div class="row pb-4">
+                    <div class="col">
+                        <button class="btn btn-primary" (click)="this.formMode.set('delete');">Delete User</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <form *ngIf="formMode() === 'approve'" [formGroup]="approveUserForm" (ngSubmit)="onApproveUser()">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingId" formControlName="id">
+                        <label for="floatingId">User Id</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-control" id="floatingStatus" formControlName="status">
+                            <option>True</option>
+                            <option>False</option>
+                        </select>
+                        <label for="floatingStatus">User Status</label>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-primary btn-lg rounded-3 py-2 fw-bold" type="submit">
+                            Approve
+                        </button>
+                    </div>
+                </form>
+                <form *ngIf="formMode() === 'add'">
+                    <p>add</p>
+                </form>
+                <form *ngIf="formMode() === 'delete'">
+                    <p>delete</p>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

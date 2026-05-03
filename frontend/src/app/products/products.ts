@@ -1,17 +1,37 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { Api } from '../services/api';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
 export class Products implements OnInit {
-  constructor(private apiService: Api) {}
+  addProductForm = new FormGroup({
+    categoryId: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required]),
+  })
+  updateProductForm = new FormGroup({
+    id: new FormControl('', [Validators.required]),
+    categoryId: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required])
+  })
+  updateProductStatusForm = new FormGroup({
+    id: new FormControl('', [Validators.required]),
+    status: new FormControl('', [Validators.required])
+  })
+
+  constructor(private apiService: Api) { }
 
   productsData = signal<any>([]);
+  formMode = signal<string>('');
 
   ngOnInit() {
     this.GetProducts();
@@ -26,5 +46,47 @@ export class Products implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  onAddProduct() {
+    if (this.addProductForm.valid) {
+      this.apiService.addProduct(this.addProductForm.value as any).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.GetProducts();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
+  }
+
+  onUpdateProduct() {
+    if (this.updateProductForm.valid) {
+      this.apiService.updateProduct(this.updateProductForm.value as any).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.GetProducts();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
+  }
+
+  onUpdateProductStatus() {
+    if (this.updateProductStatusForm.valid) {
+      this.apiService.updateProductStatus(this.updateProductStatusForm.value as any).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.GetProducts();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
   }
 }

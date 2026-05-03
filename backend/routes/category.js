@@ -28,9 +28,9 @@ router.get('/get', auth.authenticateToken, (req,res,next) => {
 });
 
 router.patch('/update', auth.authenticateToken, checkRole.checkRole, (req,res,next) => {
-    let product = req.body;
+    let category = req.body;
     var query = "UPDATE category SET name=? WHERE id=?";
-    connection.query(query, [product.name], (err, results) => {
+    connection.query(query, [category.name, category.id], (err, results) => {
         if (!err) {
             if (results.affectedRows == 0) {
                 return res.status(404).json({ message: "Category id not found." });
