@@ -1,0 +1,29 @@
+.table thead th {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table tbody td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+/* Subtle Badge Styles */
+.bg-success-subtle { background-color: #d1e7dd !important; }
+.bg-warning-subtle { background-color: #fff3cd !important; }
+
+/* Active State for Action Buttons */
+.btn-group .btn.active {
+    background-color: #0d6efd;
+    color: white;
+}
+
+/* Smooth Transition for the Sticky Panel */
+.card {
+    transition: all 0.3s ease;
+}

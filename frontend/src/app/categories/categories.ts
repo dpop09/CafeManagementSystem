@@ -18,6 +18,13 @@ export class Categories implements OnInit {
     name: new FormControl('', [Validators.required])
   })
 
+  patchCategory(category: any) {
+    this.updateCategoryForm.patchValue({
+      id: category.id,
+      name: category.name
+    });
+  }
+
   constructor(private apiService: Api) { }
 
   categoriesData = signal<any>([]);

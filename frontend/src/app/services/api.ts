@@ -89,6 +89,10 @@ export class Api {
     return this.http.patch(this.apiUrl + "product/updateStatus", productInfo);
   }
 
+  deleteUser(id : string): Observable<any> {
+    return this.http.delete(this.apiUrl + "user/delete" + id);
+  }
+
   private getRoleFromToken(token: string | null): string | null {
     if (!token)
       return null;

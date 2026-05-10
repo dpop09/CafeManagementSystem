@@ -14,6 +14,9 @@ export class Users implements OnInit {
     id: new FormControl('', [Validators.required]),
     status: new FormControl('', [Validators.required])
   })
+  deleteUserForm = new FormGroup({
+    id: new FormControl('', [Validators.required])
+  })
 
   constructor(private apiService: Api) { }
 
@@ -44,6 +47,20 @@ export class Users implements OnInit {
       this.apiService.approveUser(formData as any).subscribe({
         next: (response) => {
           console.log(response)
+          this.GetUsers();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
+  }
+
+  onDeleteUser() {
+    if (this.deleteUserForm.valid) {
+      this.apiService.deleteUser(this.deleteUserForm.value.id as string).subscribe({
+        next: (response) => {
+          console.log(response);
           this.GetUsers();
         },
         error: (err) => {

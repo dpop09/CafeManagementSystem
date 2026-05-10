@@ -28,6 +28,21 @@ export class Products implements OnInit {
     status: new FormControl('', [Validators.required])
   })
 
+  patchProduct(product: any) {
+    this.updateProductForm.patchValue({
+      id: product.id,
+      categoryId: product.categoryId,
+      name: product.name,
+      description: product.description,
+      price: product.price
+    });
+    // Also patch the status form in case they want to toggle it
+    this.updateProductStatusForm.patchValue({
+      id: product.id,
+      status: product.status
+    });
+  }
+
   constructor(private apiService: Api) { }
 
   productsData = signal<any>([]);

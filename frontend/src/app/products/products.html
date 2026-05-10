@@ -1,123 +1,143 @@
-<div class="container">
-    <div class="p-5">
-        <table class="table">
-            <thead>
-                <th scope="col">Id</th>
-                <th scope="col">Category Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
-                <th scope="col">Status</th>
+<div class="container py-5">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-primary mb-1">Product Inventory</h2>
+      <p class="text-muted small">Manage your cafe menu items, pricing, and availability.</p>
+    </div>
+    <div class="btn-group shadow-sm">
+      <button class="btn btn-outline-primary" [class.active]="formMode() === 'add'" (click)="formMode.set('add')">
+        <i class="bi bi-plus-square-fill me-1"></i> Add
+      </button>
+      <button class="btn btn-outline-primary" [class.active]="formMode() === 'update'" (click)="formMode.set('update')">
+        <i class="bi bi-pencil-square me-1"></i> Edit
+      </button>
+      <button class="btn btn-outline-secondary" [class.active]="formMode() === 'updateStatus'" (click)="formMode.set('updateStatus')">
+        <i class="bi bi-toggle-on me-1"></i> Status
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Products Table Column -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+              <tr>
+                <th class="ps-4">Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th class="text-end pe-4">Actions</th>
+              </tr>
             </thead>
             <tbody>
-                @for (product of productsData(); track product.id) {
-                <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.categoryId }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.status }}</td>
-                </tr>
-                } @empty {
-                <tr>
-                    <td colspan="5" class="text-center">There are no recorded products.</td>
-                </tr>
-                }
+              @for (product of productsData(); track product.id) {
+              <tr>
+                <td class="ps-4">
+                  <div class="d-flex align-items-center">
+                    <!-- Placeholder for product image -->
+                    <div class="product-icon me-3 bg-light rounded-3 text-primary d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cup-hot"></i>
+                    </div>
+                    <div>
+                      <div class="fw-bold">{{ product.name }}</div>
+                      <div class="text-muted small text-truncate" style="max-width: 150px;">{{ product.description }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge bg-light text-dark border">ID: {{ product.categoryId }}</span></td>
+                <td class="fw-bold">${{ product.price }}</td>
+                <td>
+                  <span class="badge rounded-pill" 
+                        [ngClass]="product.status === 'true' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+                    {{ product.status === 'true' ? 'Available' : 'Out of Stock' }}
+                  </span>
+                </td>
+                <td class="text-end pe-4">
+                  <button class="btn btn-sm btn-outline-primary border-0" (click)="formMode.set('update'); patchProduct(product)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="5" class="text-center py-5 text-muted">
+                  <i class="bi bi-box-seam fs-1 d-block mb-2"></i>
+                  No products found in the database.
+                </td>
+              </tr>
+              }
             </tbody>
-        </table>
-        <div class="row pt-5">
-            <div class="col">
-                <div class="row pb-4">
-                    <div class="col">
-                        <button class="btn btn-primary" (click)="this.formMode.set('add');">Add
-                            Product</button>
-                    </div>
-                </div>
-                <div class="row pb-4">
-                    <div class="col">
-                        <button class="btn btn-primary" (click)="this.formMode.set('update');">Update
-                            Product</button>
-                    </div>
-                </div>
-                <div class="row pb-4">
-                    <div class="col">
-                        <button class="btn btn-primary" (click)="this.formMode.set('updateStatus');">Update
-                            Status</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <form *ngIf="formMode() === 'add'" [formGroup]="addProductForm" (ngSubmit)="onAddProduct()">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingCategoryId" formControlName="categoryId">
-                        <label for="floatingCategoryId">Category Id</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingName" formControlName="name">
-                        <label for="floatingName">Product Name</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingDescription" formControlName="description">
-                        <label for="floatingDescription">Product Description</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingPrice" formControlName="price">
-                        <label for="floatingPrice">Product Price</label>
-                    </div>
-                    <div class="d-grid mb-3">
-                        <button class="btn btn-primary btn-lg rounded-3 py-2 fw-bold" type="submit">
-                            Add Product
-                        </button>
-                    </div>
-                </form>
-                <form *ngIf="formMode() === 'update'" [formGroup]="updateProductForm" (ngSubmit)="onUpdateProduct()">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingId" formControlName="id">
-                        <label for="floatingId">Product Id</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingCategoryId" formControlName="categoryId">
-                        <label for="floatingCategoryId">Category Id</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingName" formControlName="name">
-                        <label for="floatingName">Product Name</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingDescription" formControlName="description">
-                        <label for="floatingDescription">Product Description</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingPrice" formControlName="price">
-                        <label for="floatingPrice">Product Price</label>
-                    </div>
-                    <div class="d-grid mb-3">
-                        <button class="btn btn-primary btn-lg rounded-3 py-2 fw-bold" type="submit">
-                            Update Product
-                        </button>
-                    </div>
-                </form>
-                <form *ngIf="formMode() === 'updateStatus'" [formGroup]="updateProductStatusForm"
-                    (ngSubmit)="onUpdateProductStatus()">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingId" formControlName="id">
-                        <label for="floatingId">Product Id</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select class="form-control" id="floatingStatus" formControlName="status">
-                            <option>True</option>
-                            <option>False</option>
-                        </select>
-                        <label for="floatingStatus">Product Status</label>
-                    </div>
-                    <div class="d-grid mb-3">
-                        <button class="btn btn-primary btn-lg rounded-3 py-2 fw-bold" type="submit">
-                            Update Product Status
-                        </button>
-                    </div>
-                </form>
-            </div>
+          </table>
         </div>
+      </div>
     </div>
+
+    <!-- Action Panel Column -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 2rem;">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-4 text-dark">
+            <i class="bi bi-sliders2 me-2"></i>
+            {{ formMode() === 'add' ? 'New Product' : formMode() === 'update' ? 'Edit Product' : 'Toggle Status' }}
+          </h5>
+
+          <!-- Add Product Form -->
+          <form *ngIf="formMode() === 'add'" [formGroup]="addProductForm" (ngSubmit)="onAddProduct()">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control bg-light border-0" id="catId" formControlName="categoryId" placeholder="Cat ID">
+              <label for="catId">Category ID</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control bg-light border-0" id="prodName" formControlName="name" placeholder="Name">
+              <label for="prodName">Product Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea class="form-control bg-light border-0" id="prodDesc" formControlName="description" placeholder="Desc" style="height: 100px"></textarea>
+              <label for="prodDesc">Description</label>
+            </div>
+            <div class="form-floating mb-4">
+              <input type="number" class="form-control bg-light border-0" id="prodPrice" formControlName="price" placeholder="0.00">
+              <label for="prodPrice">Price ($)</label>
+            </div>
+            <button class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm" type="submit">Save Product</button>
+          </form>
+
+          <!-- Update Status Form (Simplified) -->
+          <form *ngIf="formMode() === 'updateStatus'" [formGroup]="updateProductStatusForm" (ngSubmit)="onUpdateProductStatus()">
+            <div class="alert alert-info small mb-4">Quickly toggle visibility on the menu.</div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control bg-light border-0" id="statusId" formControlName="id" placeholder="ID">
+              <label for="statusId">Product ID</label>
+            </div>
+            <div class="form-floating mb-4">
+              <select class="form-select bg-light border-0" id="statusSelect" formControlName="status">
+                <option value="true">Available (On Menu)</option>
+                <option value="false">Unavailable (Hidden)</option>
+              </select>
+              <label for="statusSelect">Status</label>
+            </div>
+            <button class="btn btn-dark w-100 py-3 fw-bold rounded-3 shadow-sm" type="submit">Update Availability</button>
+          </form>
+
+          <!-- Standard Update Form -->
+          <form *ngIf="formMode() === 'update'" [formGroup]="updateProductForm" (ngSubmit)="onUpdateProduct()">
+             <!-- Similar inputs to Add form, but mapping to UpdateForm -->
+             <div class="form-floating mb-3">
+              <input type="text" class="form-control bg-light border-0" id="uId" formControlName="id" placeholder="ID">
+              <label for="uId">Product ID</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control bg-light border-0" id="uName" formControlName="name" placeholder="Name">
+              <label for="uName">Product Name</label>
+            </div>
+            <button class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm" type="submit">Update Details</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

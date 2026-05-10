@@ -1,0 +1,27 @@
+.product-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+}
+
+.table thead th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #777;
+    padding: 1.2rem 0.75rem;
+}
+
+.bg-success-subtle { background-color: #d1e7dd !important; }
+.bg-danger-subtle { background-color: #f8d7da !important; }
+
+/* Sticky behavior for the action panel */
+.sticky-top {
+    z-index: 10;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #fff !important;
+    border: 1px solid #0d6efd !important;
+    box-shadow: none;
+}

@@ -62,10 +62,10 @@ var transporter = nodemailer.createTransport({
     }
 })
 
-router.post('/forgotPassword', (req,res) => {
+router.post('/forgotPassword', (req, res) => {
     const user = req.body;
     query = "SELECT email, password FROM user WHERE email=?";
-    connection.query(query, [user.email], (err,results) => {
+    connection.query(query, [user.email], (err, results) => {
         if (!err) {
             if (results.length <= 0) {
                 return res.status(200).json({ message: "If that email exists, a password has been sent." });
@@ -79,14 +79,14 @@ router.post('/forgotPassword', (req,res) => {
                         <b>Password:</b> ${results[0].password}<br>
                         <a href="http://localhost:4200/">Click here to login</a></p>`
                 };
-                transporter.sendMail(mailOptions, function(error,info) {
+                transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
                         console.log(error);
                     } else {
                         console.log(`Email sent: ${info.response}`);
                     }
                 });
-                return res.status(200).json({ message:"Email with password was successfully sent to your email." });
+                return res.status(200).json({ message: "Email with password was successfully sent to your email." });
             }
         } else {
             return res.status(500).json(err)
@@ -94,7 +94,7 @@ router.post('/forgotPassword', (req,res) => {
     })
 })
 
-router.get('/get', auth.authenticateToken, checkRole.checkRole, (req,res) => {
+router.get('/get', auth.authenticateToken, checkRole.checkRole, (req, res) => {
     var query = "SELECT id, name, email, contactNumber, status FROM user WHERE role='user'";
     connection.query(query, (err, results) => {
         if (!err) {
@@ -105,10 +105,10 @@ router.get('/get', auth.authenticateToken, checkRole.checkRole, (req,res) => {
     })
 })
 
-router.patch('/update', auth.authenticateToken, checkRole.checkRole, (req,res) => {
+router.patch('/update', auth.authenticateToken, checkRole.checkRole, (req, res) => {
     let user = req.body;
     var query = "UPDATE user SET status=? WHERE id=?";
-    connection.query(query, [user.status,user.id], (err,results) => {
+    connection.query(query, [user.status, user.id], (err, results) => {
         if (!err) {
             if (results.affectedRows == 0) {
                 return res.status(404).json({ message: "User id does not exist." });
@@ -120,7 +120,7 @@ router.patch('/update', auth.authenticateToken, checkRole.checkRole, (req,res) =
     })
 })
 
-router.get('/checkToken', auth.authenticateToken, (req,res) => {
+router.get('/checkToken', auth.authenticateToken, (req, res) => {
     return res.status(200).json({ message: "true" })
 })
 
@@ -143,6 +143,22 @@ router.post('/changePassword', auth.authenticateToken, (req, res) => {
                 })
             } else {
                 return res.status(400).json({ message: "Something went wrong. Please try again later." });
+            }
+        } else {
+            return res.status(500).json(err);
+        }
+    })
+})
+
+router.delete('/delete:id', auth.authenticateToken, checkRole.checkRole, (req, res) => {
+    const userId = req.params.id;
+    var query = "DELETE FROM user WHERE id=?";
+    connection.query(query, [userId], (err, results) => {
+        if (!err) {
+            if (results.affectedRows == 0) {
+                return res.status(404).json({ message: "User id does not exist." });
+            } else {
+                return res.status(200).json({ message: "User deleted successfully." });
             }
         } else {
             return res.status(500).json(err);
