@@ -41,7 +41,7 @@ export class Api {
     return this.http.get(this.apiUrl, { responseType: 'text' });
   }
 
-  signupUser(signupInfo: { username: string; contactNumber: string; email: string; password: string; }): Observable<any> {
+  signupUser(signupInfo: { name: string; contactNumber: string; email: string; password: string; }): Observable<any> {
     return this.http.post(this.apiUrl + "user/signup", signupInfo);
   }
 
@@ -91,6 +91,10 @@ export class Api {
 
   deleteUser(id : string): Observable<any> {
     return this.http.delete(this.apiUrl + "user/delete" + id);
+  }
+
+  addUser(userInfo: { name: string; contactNumber: string; email: string; password: string; }): Observable<any> {
+    return this.http.post(this.apiUrl + "user/add", userInfo);
   }
 
   private getRoleFromToken(token: string | null): string | null {

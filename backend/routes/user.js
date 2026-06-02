@@ -166,4 +166,28 @@ router.delete('/delete:id', auth.authenticateToken, checkRole.checkRole, (req, r
     })
 })
 
+router.post('/add', auth.authenticateToken, checkRole.checkRole, (req, res) => {
+    let user = req.body;
+    query = "SELECT email, password, role, status FROM user WHERE email=?";
+    connection.query(query, [user.email], (err, results) => {
+        if (!err) {
+            if (results.length <= 0) {
+                query = "INSERT INTO user(name, contactNumber, email, password, status, role) values(?,?,?,?,'false','user')";
+                connection.query(query, [user.name, user.contactNumber, user.email, user.password], (err, results) => {
+                    if (!err) {
+                        return res.status(200).json({ message: "Successfully registered user. Please wait for an admin to approve you." });
+                    } else {
+                        return res.status(500).json(err);
+                    }
+                })
+            } else {
+                return res.status(400).json({ message: "This email is already in use." });
+            }
+        }
+        else {
+            return res.status(500).json(err);
+        }
+    });
+})
+
 module.exports = router;

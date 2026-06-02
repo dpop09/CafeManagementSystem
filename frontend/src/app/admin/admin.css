@@ -18,6 +18,14 @@
     justify-content: center;
 }
 
+/* Control the custom PNG sizing inside the box */
+.admin-png-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    transition: transform 0.2s ease-in-out;
+}
+
 /* Background Colors for Subtitle variations (Bootstrap 5.3 feature) */
 .bg-primary-subtle { background-color: #e7f1ff; }
 .bg-success-subtle { background-color: #e9f7ef; }

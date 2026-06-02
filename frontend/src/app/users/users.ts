@@ -14,14 +14,42 @@ export class Users implements OnInit {
     id: new FormControl('', [Validators.required]),
     status: new FormControl('', [Validators.required])
   })
-  deleteUserForm = new FormGroup({
-    id: new FormControl('', [Validators.required])
+  addUserForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    contactNumber: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
   })
 
   constructor(private apiService: Api) { }
 
   usersData = signal<any>([]);
   formMode = signal<any>('');
+  selectedUser = signal<any>(null);
+
+  prepareApproveModal(user: any) {
+    this.selectedUser.set(user);
+    this.approveUserForm.patchValue({
+      id: user.id,
+      status: user.status
+    });
+  }
+
+  prepareDeleteModal(user: any) {
+    this.selectedUser.set(user);
+  }
+
+  confirmDelete() {
+    const user = this.selectedUser();
+    if (user && user.id) {
+      this.apiService.deleteUser(user.id).subscribe({
+        next: (res) => {
+          this.GetUsers(); // Refresh background data array
+        },
+        error: (err) => console.error(err)
+      });
+    }
+  }
 
   ngOnInit() {
     this.GetUsers();
@@ -30,6 +58,7 @@ export class Users implements OnInit {
   GetUsers() {
     this.apiService.getUsers().subscribe({
       next: (response) => {
+        console.log(response)
         this.usersData.set(response)
       },
       error: (err) => {
@@ -56,9 +85,9 @@ export class Users implements OnInit {
     }
   }
 
-  onDeleteUser() {
-    if (this.deleteUserForm.valid) {
-      this.apiService.deleteUser(this.deleteUserForm.value.id as string).subscribe({
+  onAddUser() {
+    if (this.addUserForm.valid) {
+      this.apiService.addUser(this.addUserForm.value as any).subscribe({
         next: (response) => {
           console.log(response);
           this.GetUsers();
